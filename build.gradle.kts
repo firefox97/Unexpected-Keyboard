@@ -13,7 +13,7 @@ dependencies {
 
 android {
   namespace = "juloo.keyboard2"
-  compileSdkVersion = "android-36"
+  compileSdk { version = release(36) }
 
   defaultConfig {
     applicationId = "juloo.keyboard2"
@@ -27,14 +27,18 @@ android {
   sourceSets {
     named("main") {
       manifest.srcFile("AndroidManifest.xml")
-      java.srcDirs("srcs/juloo.keyboard2", "vendor/cdict/java/juloo.cdict")
-      res.srcDirs("res", "build/generated-resources")
-      assets.srcDirs("assets")
+      java.directories += listOf("srcs/juloo.keyboard2", "vendor/cdict/java/juloo.cdict")
+      res.directories += listOf("res", "build/generated-resources")
+      assets.directories += "assets"
     }
 
     named("test") {
-      java.srcDirs("test")
+      java.directories += "test"
     }
+  }
+
+  buildFeatures {
+    resValues = true
   }
 
   externalNativeBuild {
