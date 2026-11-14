@@ -29,6 +29,7 @@ import juloo.cdict.Cdict;
 import juloo.keyboard2.dict.Dictionaries;
 import juloo.keyboard2.dict.DictionariesActivity;
 import juloo.keyboard2.dict.DictionarySwitcher;
+import juloo.keyboard2.dict.PersonalDictionary;
 import juloo.keyboard2.prefs.LayoutsPreference;
 import juloo.keyboard2.suggestions.CandidatesView;
 import juloo.keyboard2.suggestions.Suggestions;
@@ -137,6 +138,7 @@ public class Keyboard2 extends InputMethodService
     Config.initGlobalConfig(prefs, getResources(),
         _foldStateTracker.isUnfolded(), _dictionaries);
     _config = Config.globalConfig();
+    _config.personal_dictionary = PersonalDictionary.instance(this);
     Receiver recvr = this.new Receiver();
     _suggestions = new Suggestions(recvr, _config);
     _keyeventhandler = new KeyEventHandler(_config, recvr, _suggestions);
@@ -551,6 +553,16 @@ public class Keyboard2 extends InputMethodService
     public void set_suggestions(Suggestions suggestions)
     {
       _candidates_view.set_candidates(suggestions);
+    }
+
+    public void set_current_word(String word)
+    {
+      _candidates_view.set_current_word(word);
+    }
+
+    public void on_autocorrect_undone(String original, String corrected)
+    {
+      _candidates_view.on_autocorrect_undone(original, corrected);
     }
 
     public String provide_stateful_key_symbol(KeyValue.Stateful q)

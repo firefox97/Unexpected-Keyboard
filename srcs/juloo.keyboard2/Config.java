@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import juloo.cdict.Cdict;
 import juloo.keyboard2.dict.Dictionaries;
+import juloo.keyboard2.dict.PersonalDictionary;
 import juloo.keyboard2.prefs.CustomExtraKeysPreference;
 import juloo.keyboard2.prefs.ExtraKeysPreference;
 import juloo.keyboard2.prefs.LayoutsPreference;
@@ -87,6 +88,7 @@ public final class Config
   public Map<KeyValue, KeyboardData.PreferredPos> extra_keys_custom;
   public DeviceLocales device_locales = null;
   public Cdict current_dictionary = null; // Might be 'null'.
+  public PersonalDictionary personal_dictionary = null; // Might be 'null'.
   public Cdict emoji_dictionary = null; // Might be 'null'.
   public String current_dictionary_name = null; // Internal name for the current dictionary
   /** Whether to show the dictionary switching button in the candidates view. */

@@ -1,11 +1,14 @@
 package juloo.keyboard2;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import juloo.keyboard2.dict.PersonalDictionaryActivity;
 
 public class SettingsActivity extends PreferenceActivity
 {
@@ -23,6 +26,18 @@ public class SettingsActivity extends PreferenceActivity
     }
     catch (Exception _e) { fallbackEncrypted(); return; }
     addPreferencesFromResource(R.xml.settings);
+
+    findPreference("pref_personal_dictionary").setOnPreferenceClickListener(
+        new Preference.OnPreferenceClickListener()
+        {
+          @Override
+          public boolean onPreferenceClick(Preference preference)
+          {
+            startActivity(new Intent(SettingsActivity.this,
+                  PersonalDictionaryActivity.class));
+            return true;
+          }
+        });
 
     boolean foldableDevice = FoldStateTracker.isFoldableDevice(this);
     findPreference("margin_bottom_portrait_unfolded").setEnabled(foldableDevice);

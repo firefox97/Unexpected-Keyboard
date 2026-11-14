@@ -26,6 +26,20 @@ latin_kbdtuf_tr: These keys are now added automatically, unexpected: f11_placeho
 latin_kbdtuf_tr: Missing programming keys, missing: loc esc, loc tab
 latn_colemak: Some keys contain whitespaces, unexpected:  ́
 latn_dvorak: Missing important key, missing: loc capslock
+latn_dvorak_custom: Duplicate keys: *, ., /, cursor_left, cursor_right, space
+latn_dvorak_custom: Missing important key, missing: loc capslock
+latn_dvorak_custom: Missing programming keys, missing: loc esc, loc tab
+latn_dvorak_custom: Layout redefines the bottom row but some important keys are missing, missing: loc alt
+latn_dvorak_landscape: Duplicate keys: *, +, -, ., /, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, =, cursor_left, cursor_right, space
+latn_dvorak_landscape: Missing important key, missing: loc capslock
+latn_dvorak_landscape: Missing programming keys, missing: loc esc, loc tab
+latn_dvorak_landscape: Layout redefines the bottom row but some important keys are missing, missing: loc alt
+latn_dvorak_left: Duplicate keys: , !, *, ,, ., /
+latn_dvorak_left: Layout includes some ASCII punctuation but not all, missing: |
+latn_dvorak_left: Layout contains empty strings, unexpected: 
+latn_dvorak_left: Missing important key, missing: loc capslock
+latn_dvorak_left: Missing programming keys, missing: loc esc, loc tab
+latn_dvorak_left: Layout redefines the bottom row but some important keys are missing, missing: loc alt
 latn_neo2: Layout redefines the bottom row but some important keys are missing, missing: loc switch_clipboard
 latn_qwertz_cz_multifunctional: Layout includes some ASCII punctuation but not all, missing: `
 latn_qwertz_sk: Layout includes some ASCII punctuation but not all, missing: `

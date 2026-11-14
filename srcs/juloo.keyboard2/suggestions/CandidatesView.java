@@ -1,6 +1,7 @@
 package juloo.keyboard2.suggestions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build.VERSION;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import juloo.keyboard2.Config;
 import juloo.keyboard2.KeyValue;
 import juloo.keyboard2.Pointers;
 import juloo.keyboard2.R;
+import juloo.keyboard2.dict.PersonalDictionaryActivity;
 import juloo.keyboard2.dict.SupportedDictionaries;
 
 public class CandidatesView extends LinearLayout
@@ -42,6 +44,15 @@ public class CandidatesView extends LinearLayout
 
   TextView _lang_name_view;
 
+  /** Button to add the current word to the personal dictionary. */
+  TextView _add_word_btn;
+  /** Word currently being typed, pre-filled when [_add_word_btn] is tapped. */
+  String _current_word = null;
+  /** Set when backspace undoes an autocorrect: the word the user typed and the
+      correction that was inserted. Takes priority over [_current_word]. */
+  String _pending_word = null;
+  String _pending_replacement = null;
+
   public CandidatesView(Context context, AttributeSet attrs)
   {
     super(context, attrs);
@@ -57,6 +68,53 @@ public class CandidatesView extends LinearLayout
     setup_item_view(3, R.id.candidates_emoji);
     setup_dictionary_switch_button();
     _lang_name_view = (TextView)findViewById(R.id.candidates_lang_name);
+    setup_add_word_button();
+  }
+
+  /** Called with the word being typed, or [null] when no word is typed. */
+  public void set_current_word(String word)
+  {
+    _current_word = word;
+  }
+
+  /** Called when backspace undoes an autocorrect. Highlights the add-word
+      button and remembers the words to pre-fill. */
+  public void on_autocorrect_undone(String original, String corrected)
+  {
+    _pending_word = original;
+    _pending_replacement = corrected;
+    set_add_word_highlight(true);
+  }
+
+  void set_add_word_highlight(boolean highlighted)
+  {
+    TypedValue tv = new TypedValue();
+    getContext().getTheme().resolveAttribute(
+        highlighted ? R.attr.colorLabelActivated : R.attr.colorLabel, tv, true);
+    _add_word_btn.setTextColor(tv.data);
+  }
+
+  void setup_add_word_button()
+  {
+    _add_word_btn = (TextView)findViewById(R.id.candidates_add_word);
+    _add_word_btn.setOnClickListener(new View.OnClickListener()
+        {
+          @Override
+          public void onClick(View _v)
+          {
+            Intent i = new Intent(getContext(), PersonalDictionaryActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            String word = (_pending_word != null) ? _pending_word : _current_word;
+            if (word != null && !word.isEmpty())
+              i.putExtra(PersonalDictionaryActivity.EXTRA_WORD, word);
+            if (_pending_replacement != null)
+              i.putExtra(PersonalDictionaryActivity.EXTRA_REPLACEMENT, _pending_replacement);
+            _pending_word = null;
+            _pending_replacement = null;
+            set_add_word_highlight(false);
+            getContext().startActivity(i);
+          }
+        });
   }
 
   public void set_candidates(Suggestions s)

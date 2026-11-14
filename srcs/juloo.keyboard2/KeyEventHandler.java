@@ -138,6 +138,7 @@ public final class KeyEventHandler
 
   public void suggestion_entered(String text, boolean add_space_after)
   {
+    last_correction_word = text;
     if (add_space_after)
       text = text + " ";
     String old = _typedword.get();
@@ -547,6 +548,8 @@ public final class KeyEventHandler
       enter a suggestion (with the space bar or the candidates view) or [null]
       otherwise. */
   String last_replaced_word = null;
+  /** The suggestion that replaced [last_replaced_word]. */
+  String last_correction_word = null;
   /** Length of the text before the cursor that should be replaced by
       backspace. */
   int last_replacement_word_len = 0;
@@ -577,7 +580,11 @@ public final class KeyEventHandler
         && last_replaced_word != null)
     {
       replace_surrounding_text(last_replacement_word_len, 0, last_replaced_word + " ");
+      String original = last_replaced_word;
+      String corrected = last_correction_word;
       last_replaced_word = null;
+      last_correction_word = null;
+      _recv.on_autocorrect_undone(original, corrected);
       _next_last_action = LastAction.SUGGESTION_UNDO;
     }
     else
@@ -594,6 +601,9 @@ public final class KeyEventHandler
     public void selection_state_changed(boolean selection_is_ongoing);
     public InputConnection getCurrentInputConnection();
     public Handler getHandler();
+    /** Called after backspace undoes an autocorrect. [original] is the word
+        the user typed, [corrected] is what autocorrect inserted. */
+    public void on_autocorrect_undone(String original, String corrected);
   }
 
   class Autocapitalisation_callback implements Autocapitalisation.Callback
